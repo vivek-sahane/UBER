@@ -3,12 +3,10 @@ const userService = require('../services/user.service')
 const { validationResult } = require('express-validator')
 const blacklistTokenModel = require('../models/blacklistToken.model')
 
-
 module.exports.registerUser = async(req,res,next) => {
-    
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        return resizeBy.status(400).json({ errors: errors.array()})
+        return res.status(400).json({ errors: errors.array() });
     }
 
     const { fullname, email, password } = req.body;
@@ -31,14 +29,12 @@ module.exports.registerUser = async(req,res,next) => {
     const token = user.generateAuthToken();
 
     res.status(201).json({token, user});
-
 }
 
 module.exports.loginUser = async(req, res, next) => {
-
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        return resizeBy.status(400).json({errors: errors.array()});
+        return res.status(400).json({errors: errors.array()});
     }
 
     const { email,password } = req.body;
@@ -68,14 +64,11 @@ module.exports.getUserProfile = async(req, res, next) => {
 
 module.exports.logoutUser = async (req, res, next) => {
   try {
-    // clear cookie if you are using cookie-based auth
     res.clearCookie("token");
 
-    // read from cookie or authorization header
-    let token = req.cookies?.token;   // works if you use cookie-parser middleware
+    let token = req.cookies?.token;
 
     if (!token && req.headers.authorization) {
-      // "Bearer <token>"
       const parts = req.headers.authorization.split(" ");
       if (parts.length === 2 && parts[0] === "Bearer") {
         token = parts[1];
@@ -86,7 +79,6 @@ module.exports.logoutUser = async (req, res, next) => {
       return res.status(400).json({ message: "Token not provided" });
     }
 
-    // blacklist the token
     await blacklistTokenModel.create({ token });
 
     return res.status(200).json({ message: "Logged out" });
@@ -94,4 +86,3 @@ module.exports.logoutUser = async (req, res, next) => {
     return res.status(500).json({ message: err.message });
   }
 };
-
