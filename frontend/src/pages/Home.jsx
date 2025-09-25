@@ -66,7 +66,11 @@ const Home = () => {
         }}
         className='h-screen w-screen'>
           {/* image for temporary use  */}
-          <img className='h-full w-full object-cover' src='https://www.medianama.com/wp-content/uploads/2018/06/Screenshot_20180619-112715.png.png' alt='' />
+          <img 
+            className='h-full w-full object-cover' 
+            src='https://www.medianama.com/wp-content/uploads/2018/06/Screenshot_20180619-112715.png' 
+            alt='background' 
+          />
       </div>
 
       <div className='bg-white flex flex-col justify-end h-screen absolute top-0 w-full'>
@@ -121,7 +125,15 @@ const Home = () => {
         </div>
       </div>
 
-      <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-8'>
+      <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14'>
+        
+        
+        <h5 className='p-3 text-center w-[93%] absolute top-0 '
+          onClick={()=> {
+            setVehiclePanel(false)
+          }}
+          ><i className='text-3xl text-gray-200 ri-arrow-down-wide-line'></i></h5>
+
         <h3 className='text-2xl font-semibold mb-5'>Choose a Vehicle</h3>
 
         {/** Div:1 for location */}
