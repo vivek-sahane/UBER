@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { CaptainDataContext } from '../context/CaptainContext'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import logo from '../assets/logo.png'
 
 const CaptainSignup = () => {
@@ -18,7 +20,7 @@ const CaptainSignup = () => {
   const [ vehicleType, setVehicleType ] = useState('')
 
 
-
+  const { captain, setCaptain } = React.useContext(CaptainDataContext)
 
 
   const submitHandler = async (e) => {
@@ -38,6 +40,20 @@ const CaptainSignup = () => {
       }
     }
 
+    try {
+  const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData)
+  if (response.status === 201) {
+    const data = response.data
+    setCaptain(data.captain)
+    localStorage.setItem('token', data.token)
+    navigate('/captain-home')
+  }
+} catch (error) {
+  console.error(error.response?.data || error.message)
+  alert(error.response?.data?.message || "Signup failed")
+}
+
+
     setEmail('')
     setFirstName('')
     setLastName('')
@@ -46,8 +62,8 @@ const CaptainSignup = () => {
     setVehiclePlate('')
     setVehicleCapacity('')
     setVehicleType('')
-  }  
 
+  }
   return (
     <div className='py-5 px-5 h-screen flex flex-col justify-between'>
       <div>
