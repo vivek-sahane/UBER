@@ -1,7 +1,49 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import CaptainDetails from '../components/CaptainDetails'
+import RidePopUp from '../components/RidePopUp'
+import {useGSAP} from '@gsap/react';
+import gsap from 'gsap';
+import ConfirmRidePopUp from '../components/ConfirmRidePopUp';
+
+
 
 const CaptainHome = () => {
+
+  const [ridePopupPanel, setRidePopupPanel] = useState(true)
+  const ridePopupPanelRef = useRef(null)
+  const [confirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false)
+  const confirmRidePopupPanelRef = useRef(null)
+
+
+  useGSAP(function() {
+    if(ridePopupPanel) {
+      gsap.to(ridePopupPanelRef.current, {
+        transform:'translateY(0)'
+      })
+    }
+    else{
+      gsap.to(ridePopupPanelRef.current, {
+        transform:'translateY(100%)'
+      })
+    }
+  },[ridePopupPanel])
+
+
+  useGSAP(function() {
+    if(confirmRidePopupPanel) {
+      gsap.to(confirmRidePopupPanelRef.current, {
+        transform:'translateY(0)'
+      })
+    }
+    else{
+      gsap.to(confirmRidePopupPanelRef.current, {
+        transform:'translateY(100%)'
+      })
+    }
+  },[confirmRidePopupPanel])
+
+
   return (
     <div className='h-screen'>
       <div className='fixed p-6 top-0 flex items-center justify-between w-screen'>
@@ -22,34 +64,17 @@ const CaptainHome = () => {
           />
         </div>
         <div className='h-2/5 p-6'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center justify-start gap-3' >
-              <img className='h-10 w-10 rounded-full object-cover ' src='https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg?w=2000' alt='user' />
-              <h4 className='text-lg font-medium'>Abhishek Sethi</h4>
-            </div>
-            <div>
-              <h4 className='text-xl font-semibold'>$295.2</h4>
-              <p className='text-sm text-gray-600'>Earned</p>
-            </div>
-          </div>
-          <div className='flex p-3 mt-8 bg-gray-100 rounded-xl justify-center gap-5 items-start'>
-            <div className='text-center '>
-              <i className='text-3xl mb-2 font-thin ri-timer-2-line'></i>
-              <h5 className='text-lg font-medium'>10.2</h5>
-              <p className='text-sm text-gray-600'>Hours Online</p>
-            </div>
-            <div className='text-center '>
-              <i className='text-3xl mb-2 font-thin ri-speed-up-line'></i>
-              <h5 className='text-lg font-medium'>10.2</h5>
-              <p className='text-sm text-gray-600'>Hours Online</p>
-            </div>
-            <div className='text-center '>
-              <i className='text-3xl mb-2 font-thin ri-booklet-line'></i>
-              <h5 className='text-lg font-medium'>10.2</h5>
-              <p className='text-sm text-gray-600'>Hours Online</p>
-            </div>
-          </div>
+          <CaptainDetails  />
         </div>
+
+        <div ref={ridePopupPanelRef} className='fixed w-full z-10 bottom-0 translate-y-full  bg-white px-3 py-10 pt-12'>
+          <RidePopUp setRidePopupPanel={setRidePopupPanel} setConfirmRidePopupPanel={setConfirmRidePopupPanel}  />
+        </div>
+
+        <div ref={confirmRidePopupPanelRef} className='fixed w-full h-screen z-10 bottom-0 translate-y-full  bg-white px-3 py-10 pt-12'>
+          <ConfirmRidePopUp setConfirmRidePopupPanel={setConfirmRidePopupPanel} setRidePopupPanel={setRidePopupPanel} />
+        </div>
+
     </div>
   )
 }
