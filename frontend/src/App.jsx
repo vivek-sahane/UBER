@@ -13,7 +13,6 @@ import CaptainProtectWrapper from './pages/CaptainProtectWrapper'
 import Riding from './pages/Riding'
 import CaptainRiding from './pages/CaptainRiding'
 import 'remixicon/fonts/remixicon.css'
-import OngoingRide from './pages/OngoingRide'
 
 
 const App = () => {
@@ -27,8 +26,6 @@ const App = () => {
         <Route path='/signup' element={<UserSignup/>} />
         <Route path='/captain-login' element={<Captainlogin/>}/>
         <Route path='/captain-signup' element={<CaptainSignup/> } />
-
-        <Route path='/ongoing' element={<OngoingRide/>} />
 
         <Route path='/home' element={
           <UserProtectedWrapper>
